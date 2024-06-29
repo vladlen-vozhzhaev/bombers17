@@ -8,6 +8,14 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (20, 20)
         self.walls = walls
+        self.bombs = pygame.sprite.Group()
+        self.countBomb = 1
+
+    def setBomb(self, bomb):
+        self.bombs.add(bomb)
+        if self.countBomb >= len(self.bombs):
+            all_sprites.add(bomb)
+
     def update(self, dx, dy):
         if dx!=0 and dy!=0:
             dx, dy = 0,0
