@@ -11,7 +11,7 @@ background_image = pygame.image.load("img/ground/ground_05.png")
 background_width, background_height = background_image.get_size()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
-walls = pygame.sprite.Group()
+
 for i in range(len(map)):
     for j in range(len(map[i])):
         if map[i][j] == 1:
