@@ -9,12 +9,16 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = (20, 20)
         self.walls = walls
         self.bombs = pygame.sprite.Group()
-        self.countBomb = 1
+        self.countBomb = 3
 
     def setBomb(self, bomb):
-        self.bombs.add(bomb)
-        if self.countBomb >= len(self.bombs):
-            all_sprites.add(bomb)
+        bomb_collide = pygame.sprite.spritecollide(bomb, self.bombs, False)
+        if not bomb_collide:
+            self.bombs.add(bomb)
+            if self.countBomb >= len(self.bombs):
+                all_sprites.add(bomb)
+            else:
+                self.bombs.remove(bomb)
 
     def update(self, dx, dy):
         if dx!=0 and dy!=0:
@@ -34,11 +38,11 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = new_y
         collided_walls = pygame.sprite.spritecollide(self, self.walls, False)
         for wall in collided_walls:
-            if dx>0:
+            if dx > 0:
                 self.rect.right = wall.rect.left
-            if dx<0:
+            if dx < 0:
                 self.rect.left = wall.rect.right
-            if dy>0:
+            if dy > 0:
                 self.rect.bottom = wall.rect.top
-            if dy<0:
+            if dy < 0:
                 self.rect.top = wall.rect.bottom

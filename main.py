@@ -1,6 +1,7 @@
 import pygame
 
 from Bomb import Bomb
+from Box import Box
 from Player import Player
 from gameConfig import *
 from Wall import Wall
@@ -14,8 +15,11 @@ walls = pygame.sprite.Group()
 for i in range(len(map)):
     for j in range(len(map[i])):
         if map[i][j] == 1:
-            wall = Wall(50*j, 50*i)
+            wall = Wall(BLOCK_SIZE*j, BLOCK_SIZE*i)
             walls.add(wall)
+        elif map[i][j] == 2:
+            box = Box(BLOCK_SIZE*j, BLOCK_SIZE*i)
+            walls.add(box)
 
 player = Player(walls)
 all_sprites.add(player, walls)
@@ -37,8 +41,14 @@ while True:
     if keys[pygame.K_DOWN]:
         dy = PLAYER_SPEED
     if keys[pygame.K_SPACE]:
-        bomb = Bomb(player)
+        bomb = Bomb(player.rect.center)
         player.setBomb(bomb)
+
+    for bomb in player.bombs:
+        if bomb.explodeRender:
+            bomb.update()
+        else:
+            player.bombs.remove(bomb)
 
     player.update(dx, dy)
     for x in range(0, SCREEN_WIDTH, background_width):
